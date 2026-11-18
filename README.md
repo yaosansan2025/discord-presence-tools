@@ -1,5 +1,7 @@
 # Discord Presence Tools
 
+**简体中文** · [English](README.en.md)
+
 两个 macOS 小工具，通过正在运行的 Discord 桌面客户端发布活动。
 
 使用前请准备 Python 3.9 或更新版本，以及各工具对应的 [Discord Application ID](https://discord.com/developers/applications)。ChatGPT 和 Roblox 客户端应安装在 `/Applications`。
