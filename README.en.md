@@ -24,8 +24,20 @@ Use a separate Discord application and provide your public Roblox user ID.
 python3 roblox_join.py --application-id 'ROBLOX_DISCORD_APP_ID' --roblox-user 'ROBLOX_USER_ID'
 ```
 
-When you enter a Roblox session, the script attempts to add a button labeled **加入我的 Roblox** (“Join my Roblox”) to your Discord activity. The activity clears when you leave the session. Use `--check` to see whether the script detects your current session locally.
+When you enter a Roblox session, the script adds a **Join My Roblox Game** button to your Discord activity. By default, the activity clears when you leave the session. Use `--check` to see whether the script detects your current session locally.
 
-The publishing flow passed a simulated test. Joining the same server in one click still needs a live test from a separate account. Visitors must have permission to join you on Roblox.
+The button was published in a live Roblox session. Joining the same server in one click still needs a test from a separate account. Visitors must have permission to join you on Roblox.
+
+## Show Roblox only in the foreground
+
+Compile the foreground detector with the macOS command-line developer tools, then pass its absolute path to the Roblox tool.
+
+```sh
+xcrun clang -framework AppKit frontmost_pid.m -o frontmost_pid
+python3 roblox_join.py --application-id 'ROBLOX_DISCORD_APP_ID' --roblox-user 'ROBLOX_USER_ID' \
+  --foreground-helper "$PWD/frontmost_pid" --show-while-open --image roblox
+```
+
+Upload an asset named `roblox` to the Roblox Discord application. The `--show-while-open` option also shows the Roblox home screen while it has focus. The join button appears during a game session only. If you run both tools, pass the same `--priority-lock` path to both commands, such as `"$HOME/Library/Caches/roblox-priority.lock"`. When the Roblox activity clears, ChatGPT resumes if it is still open. To show a small ChatGPT icon on the Roblox activity, upload an asset named `chatgpt` to the Roblox Discord application and pass `--include-chatgpt`.
 
 Press `Control+C` in Terminal to stop either tool.

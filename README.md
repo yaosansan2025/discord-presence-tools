@@ -24,6 +24,18 @@ python3 chatgpt_presence.py 'CHATGPT_DISCORD_APP_ID' --watch
 python3 roblox_join.py --application-id 'ROBLOX_DISCORD_APP_ID' --roblox-user 'ROBLOX_USER_ID'
 ```
 
-进入对局后，程序会尝试向 Discord 活动添加「加入我的 Roblox」按钮。离开对局后会清除活动。使用 `--check` 可以只检查本机对局识别。按钮发布已通过模拟测试，实际一键入服仍待另一账号验证，访客须满足 Roblox 的加入权限。
+进入对局后，程序会在 Discord 活动中发布 **Join My Roblox Game** 按钮。默认在离开对局后清除活动。使用 `--check` 可以只检查本机对局识别。按钮已在真实对局中发布，实际一键入服仍待另一账号验证。访客须有权限在 Roblox 中加入你的对局。
+
+## 仅在 Roblox 位于前台时显示
+
+使用 macOS 命令行开发工具编译前台检测程序，再把它的绝对路径传给 Roblox 工具。
+
+```sh
+xcrun clang -framework AppKit frontmost_pid.m -o frontmost_pid
+python3 roblox_join.py --application-id 'ROBLOX_DISCORD_APP_ID' --roblox-user 'ROBLOX_USER_ID' \
+  --foreground-helper "$PWD/frontmost_pid" --show-while-open --image roblox
+```
+
+先在 Roblox 对应的 Discord 应用里上传名为 `roblox` 的素材。`--show-while-open` 可在前台显示 Roblox 主页，加入按钮只在对局中出现。如果同时运行两个工具，给两条命令传入同一个 `--priority-lock` 路径，例如 `"$HOME/Library/Caches/roblox-priority.lock"`。Roblox 活动结束后，仍运行的 ChatGPT 会恢复显示。给 Roblox 应用再上传名为 `chatgpt` 的素材，并加上 `--include-chatgpt`，即可在 Roblox 活动中显示 ChatGPT 小图标。
 
 两个工具均可在终端按 `Control+C` 停止。
